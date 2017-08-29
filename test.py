@@ -45,7 +45,7 @@ q = "{} {} {} {} {} {} {}".format(raw_q[0], raw_q[1], raw_q[2], raw_q[3], raw_q[
 dq = "{} {} {} {} {} {} {}".format(raw_dq[0], raw_dq[1], raw_dq[2], raw_dq[3], raw_dq[4], raw_dq[5], raw_dq[6])
 print('q:::',q)
 
-raw_input( "enter to proceed")
+raw_input( "Hit Enter to proceed:")
 
 
 
@@ -70,8 +70,11 @@ orn = "{} {} {}".format(0.1, 0.1, 0.1)
 sawyer.setDesPosOrn(pos,orn)
 
 
-
+###################
+### TODO: ./sawyer sawyer.urdf
 ### Run sawyer.cpp
+####################
+
 
 ########################
 ## START MOVING
