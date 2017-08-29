@@ -34,23 +34,31 @@ def setDesPosOrn(pos, orn):
 
 def moveTo(physicsClient,sawyerId):
     while(1):
+        start = time.time()
         #print("all joint states:",len(p.getJointStates(sawyerId ,[0,1,2,3,4,5,6,7,8]))) -- 9
         jointStates = p.getJointStates(sawyerId, [1,3,4,5,6,7,8])
         if jointStates is None:
             continue
         raw_q = [jointState[0] for jointState in jointStates]
         raw_dq = [jointState[1] for jointState in jointStates]
+        sum_dq = sum([abs(val) for val in raw_dq])
+        if sum_dq<0.3:
+            print('done moving to desired position')
+            break
         q = "{} {} {} {} {} {} {}".format(raw_q[0], raw_q[1], raw_q[2], raw_q[3], raw_q[4], raw_q[5], raw_q[6])
         dq = "{} {} {} {} {} {} {}".format(raw_dq[0], raw_dq[1], raw_dq[2], raw_dq[3], raw_dq[4], raw_dq[5], raw_dq[6])
-        print('q:::',q)
+        print('dq:::',dq)
 
 
         # Wait for Sawyer Controller to finish reading previous Q Value
         q_isReady = r.get(PY_Q_READY)
+        #start = time.time()
     
     
         while q_isReady is not None and q_isReady == "Ready to Read":
             q_isReady = r.get(PY_Q_READY)
+        #end = time.time()
+        #print('seconds used waiting for Sawyer Controller to finish reading previous Q Value:',end-start)
 
         #Write values to Redis Client
         r.set(PY_JOINT_ANGLES_KEY, q)
@@ -59,19 +67,21 @@ def moveTo(physicsClient,sawyerId):
         r.set(PY_Q_READY, "Ready to Read")
     
         #Wait for torque value to be ready
+        #start = time.time()
         torque_isReady = r.get(PY_TORQUE_READY)
         while torque_isReady != "Ready to Read":
             torque_isReady = r.get(PY_TORQUE_READY)
+        #end = time.time()
+        #print('seconds used getting torque:',end-start)
 
         #Read torque values
         tau = r.get(PY_JOINT_TORQUES_COMMANDED_KEY) # Get torque from PID
-
         #Tell Saw Controller that torque value has been read
         r.set(PY_TORQUE_READY, "Ready to Write")
     
         #Build float array
         tau_floats = [float(x) for x in tau.split()]
-        print(tau_floats)
+        #print(tau_floats)
     
     
         #Apply torques
@@ -79,5 +89,7 @@ def moveTo(physicsClient,sawyerId):
                                 controlMode=p.TORQUE_CONTROL,
                                 physicsClientId=physicsClient,
                                 forces=tau_floats)
-                                
+
+        end = time.time()
+        #print('time of one step:', end - start )
         p.stepSimulation()
