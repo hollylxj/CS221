@@ -32,7 +32,7 @@ r=redis.Redis(host='localhost',port=6379,db=0)
 physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
 p.setGravity(0,0,-9.8)
 p.setTimeStep(0.0002)
-os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
+#os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
 sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
 #p.setRealTimeSimulation(1,sawyerId)
 
