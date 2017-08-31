@@ -1,21 +1,20 @@
-import pybullet as p
 import os
-import time
 import sawyer
 from math import pi
-
-
 
 
 ##########################
 ## Setup Sawyer simulator
 ##########################
-physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
-p.setGravity(0,0,-9.8)
-p.setTimeStep(0.0002)
+#physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
+sawyer.connect()
+gravity = (0, 0, -9.8)
+timeStep = 0.0002
+urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
 #print(os.getcwd())
-os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
-sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
+#os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
+sawyer.setup(gravity, timeStep, urdfFile)
+#sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
 #p.setRealTimeSimulation(1,sawyerId)
 
 
@@ -23,26 +22,10 @@ sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
 ############################
 ## Reseting initial position
 ############################
-jids = list(range(p.getNumJoints(sawyerId)))
-for jid in [1,3,4,5,6,7,8]:
-    p.resetJointState(sawyerId, jid, targetValue=0.5, targetVelocity=0.,
-                  physicsClientId=physicsClient)
-
-count = 0
-while(count<=1000):
-    p.stepSimulation()
-    count +=1
+sawyer.resetPos(0.5)
 #time.sleep(1)
 
-jointStates = p.getJointStates(sawyerId, [1,3,4,5,6,7,8])
-
-while jointStates is None:
-    jointStates = p.getJointStates(sawyerId, [1,3,4,5,6,7,8])
-
-raw_q = [jointState[0] for jointState in jointStates]
-raw_dq = [jointState[1] for jointState in jointStates]
-q = "{} {} {} {} {} {} {}".format(raw_q[0], raw_q[1], raw_q[2], raw_q[3], raw_q[4], raw_q[5], raw_q[6])
-dq = "{} {} {} {} {} {} {}".format(raw_dq[0], raw_dq[1], raw_dq[2], raw_dq[3], raw_dq[4], raw_dq[5], raw_dq[6])
+[q,dq,sum_dq] = sawyer.readQdQ()
 print('q:::',q)
 
 raw_input( "Hit Enter to proceed:")
@@ -52,10 +35,7 @@ raw_input( "Hit Enter to proceed:")
 #######################
 #Preparation for torque mode control
 #######################
-p.setJointMotorControlArray(sawyerId, jointIndices=jids,
-                            controlMode=p.VELOCITY_CONTROL,
-                            physicsClientId=physicsClient,
-                            forces=(0.,) * len(jids) )
+sawyer.disableMotors()
 # set 0 Torque, initial Q and dQ
 #r.set(PY_JOINT_TORQUES_COMMANDED_KEY,"{} {} {} {} {} {} {}".format(0,0,0,0,0,0,0))
 #r.set(PY_JOINT_ANGLES_KEY, q)
@@ -65,9 +45,9 @@ p.setJointMotorControlArray(sawyerId, jointIndices=jids,
 #######################
 ## input desired position and orientation
 #######################
-pos = "{} {} {}".format(0.0, 0.8, 0.0)
-orn = "{} {} {}".format(0.1, 0.1, 0.1)
-sawyer.setDesPosOrn(pos,orn)
+pos = (0.0, 0.8, 0.0)
+orn = (pi/4, pi/4, pi/4)
+sawyer.setDesPosOrn(pos, orn)
 
 
 ###################
@@ -79,9 +59,9 @@ sawyer.setDesPosOrn(pos,orn)
 ########################
 ## START MOVING
 ########################
-sawyer.moveTo(physicsClient,sawyerId)
+sawyer.moveTo()
 
-
-
-p.disconnect()
+while(1):
+    None
+sawyer.disconnect()
 
