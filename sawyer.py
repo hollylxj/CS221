@@ -1,5 +1,6 @@
 import pybullet as p
 import os
+import ctypes
 
 # Redis libraries
 #################
@@ -24,7 +25,8 @@ r=redis.Redis(host='localhost',port=6379,db=0)
 
 #Global Variables
 #numOfJoints = range(p.getNumJoints(sawyerId))
-jids = [1,3,4,5,6,7,8]
+#jids = [1,3,4,5,6,7,8]
+jids = [5,10,11,12,13,15,18]
 sawyerId = None     #Call setup function to load this variable
 physicsClientId = None     #Call connect function to load this variable
 
@@ -42,6 +44,11 @@ def setup(gravity, timeStep, urdfFile):
     p.setGravity(gravity[0],gravity[1],gravity[2])
     p.setTimeStep(timeStep)
     sawyerId = p.loadURDF(urdfFile, useFixedBase = 1)
+    for i in range (p.getNumJoints(sawyerId,physicsClientId)):
+        print(i, p.getJointInfo(sawyerId,i,physicsClientId)[1])
+
+
+
 
 def resetPos(val):
     for jid in jids:
@@ -122,6 +129,7 @@ def sendTorque(torque):
 
 def moveTo():
     loopCount = 0
+    #p.setRealTimeSimulation(1,physicsClientId)
     while(1):
         start = time.time()
 
@@ -138,6 +146,8 @@ def moveTo():
 
         # read torque needs to be applied from redis
         torque=readTorque()
+        
+        print(torque)
     
         # set pybullet simulator joints to apply torque
         sendTorque(torque)

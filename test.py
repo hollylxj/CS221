@@ -10,9 +10,12 @@ from math import pi
 sawyer.connect()
 gravity = (0, 0, -9.8)
 timeStep = 0.0002
-urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
+#urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
+#urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
 #print(os.getcwd())
 #os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
+urdfFile = "/Users/holly/Pybullet_test/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
+
 sawyer.setup(gravity, timeStep, urdfFile)
 #sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
 #p.setRealTimeSimulation(1,sawyerId)
