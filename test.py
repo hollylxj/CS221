@@ -9,12 +9,12 @@ from math import pi
 #physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
 sawyer.connect()
 gravity = (0, 0, -9.8)
-timeStep = 0.0002
-#urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
+timeStep = 0.0001
+urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
 #urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
 #print(os.getcwd())
 #os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
-urdfFile = "/Users/holly/Pybullet_test/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
+#urdfFile = "sawyer_robot/sawyer_description/urdf/sawyer.urdf"
 
 sawyer.setup(gravity, timeStep, urdfFile)
 #sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
@@ -31,7 +31,7 @@ sawyer.resetPos(0.5)
 [q,dq,sum_dq] = sawyer.readQdQ()
 print('q:::',q)
 
-raw_input( "Hit Enter to proceed:")
+input( "Hit Enter to proceed:")
 
 
 
@@ -50,7 +50,6 @@ sawyer.disableMotors()
 #######################
 pos = (0.0, 0.8, 0.0)
 orn = (pi/4, pi/4, pi/4)
-sawyer.setDesPosOrn(pos, orn)
 
 
 ###################
@@ -62,7 +61,7 @@ sawyer.setDesPosOrn(pos, orn)
 ########################
 ## START MOVING
 ########################
-sawyer.moveTo()
+sawyer.moveTo(pos,orn)
 
 while(1):
     None
