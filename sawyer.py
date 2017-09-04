@@ -3,7 +3,7 @@ import os
 import ctypes
 from SawyerController.SawyerController import SawyerController as SC
 import time
-from time import sleep
+
 
 
 
@@ -16,6 +16,7 @@ sawyerId = None     #Call setup function to load this variable
 physicsClientId = None     #Call connect function to load this variable
 sc = SC('sawyer.urdf')
 
+# connect pybullet simulator
 def connect():
     global physicsClientId
     physicsClientId = p.connect(p.GUI)#or p.DIRECT for non-graphical version
@@ -23,11 +24,11 @@ def connect():
 def disconnect():
     p.disconnect()
 
-#gravity must have len of 3
+# disconnect pybullet simulator
 def setup(gravity, timeStep, urdfFile):
     global sawyerId
     #TODO: Insert assert statement for len of gravity
-    p.setGravity(gravity[0],gravity[1],gravity[2])
+    p.setGravity(gravity[0],gravity[1],gravity[2]) #gravity must have len of 3
     p.setTimeStep(timeStep)
     sawyerId = p.loadURDF(urdfFile, useFixedBase = 1)
     for i in range (p.getNumJoints(sawyerId,physicsClientId)):
@@ -35,28 +36,22 @@ def setup(gravity, timeStep, urdfFile):
 
 
 
-
+# reset joint positions to all 0.5, this is called at the beginning to avoid starting from a singularity position
 def resetPos(val):
     for jid in jids:
         p.resetJointState(sawyerId, jid, targetValue=val, targetVelocity=0.,
                       physicsClientId=physicsClientId)
-    sleep(5)
-    #for _ in range(100):
-        #p.stepSimulation()
+    for _ in range(100):
+        p.stepSimulation()
 
+# disable all motors to enable torque mode.
 def disableMotors():
     p.setJointMotorControlArray(sawyerId, jointIndices=jids,
                             controlMode=p.VELOCITY_CONTROL,
                             physicsClientId=physicsClientId,
                             forces=(0.,) * len(jids) )
 
-#pos and orn must have len of 3
-def setDesPosOrn(pos, orn):
-    #TODO: Include assert statement for len of pos and orn
-    pos = "{} {} {}".format(pos[0], pos[1], pos[2])
-    orn = "{} {} {}".format(orn[0], orn[1], orn[2])
-
-
+# read current q and dq from pybullet simulator
 def readQdQ():
     jointStates = p.getJointStates(sawyerId, jids)
     while jointStates is None:
@@ -69,55 +64,42 @@ def readQdQ():
     print('dq:::',dq)
     return [q, dq, sum_dq]
 
-
-
-def readTorque():
-    #Wait for torque value to be ready
-    #start = time.time()
-    torque_isReady = r.get(PY_TORQUE_READY)
-    while torque_isReady != "Ready to Read":
-        torque_isReady = r.get(PY_TORQUE_READY)
-    #end = time.time()
-    #print('seconds used getting torque:',end-start)
-
-    #Read torque values
-    tau = r.get(PY_JOINT_TORQUES_COMMANDED_KEY) # Get torque from PID
-        #Tell Saw Controller that torque value has been read
-    r.set(PY_TORQUE_READY, "Ready to Write")
-        #Build float array
-    tau_floats = [float(x) for x in tau.split()]
-    return tau_floats
-
+# apply torques to pybullet simulator
 def sendTorque(torque):
     #Apply torques
     p.setJointMotorControlArray(sawyerId, jids,
                                 controlMode=p.TORQUE_CONTROL,
                                 physicsClientId=physicsClientId,
                                 forces=torque)
-
+# ask sawyer to move to a given position and orientation
 def moveTo(pos,orn):
     loopCount = 0
     #p.setRealTimeSimulation(1,physicsClientId)
     while(1):
+        
         start = time.time()
-
         # read Q and dQ values from pybullet simulator
         [q,dq,sum_dq] = readQdQ()
         
+        # if sawyer is moving very slow, stop it.
         loopCount += 1
+        if loopCount>10000:
+            break
         if sum_dq<0.03 and loopCount>10:
             print('done moving to desired position')
             break
 
 
+        readQ = time.time()
         # Call SawyerController to calculate torque
         torque= sc.calcTorque(q, dq, pos, orn)
+        calcT = time.time()
         
 
-    
+
         # set pybullet simulator joints to apply torque
         sendTorque(torque)
     
-        end = time.time()
-        print('time of one step:', end - start )
+        sendT = time.time()
         p.stepSimulation()
+        print('readQ:', readQ - start, '    calcT:',calcT-readQ,'   sendT:',sendT-calcT)

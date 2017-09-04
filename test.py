@@ -10,7 +10,8 @@ from math import pi
 sawyer.connect()
 gravity = (0, 0, -9.8)
 timeStep = 0.0001
-urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
+urdfFile = "sawyer.urdf"
+#urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
 #urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
 #print(os.getcwd())
 #os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
@@ -48,8 +49,8 @@ sawyer.disableMotors()
 #######################
 ## input desired position and orientation
 #######################
-pos = (0.0, 0.8, 0.0)
-orn = (pi/4, pi/4, pi/4)
+pos = (0.8, 0.0, 0.0)
+orn = (1, 0, 0)
 
 
 ###################
@@ -62,8 +63,11 @@ orn = (pi/4, pi/4, pi/4)
 ## START MOVING
 ########################
 sawyer.moveTo(pos,orn)
+sawyer.moveTo((0.8,0.1,0.0),orn)
+sawyer.moveTo((0.8,0.1,0.1),orn)
+sawyer.moveTo((0.8,0.0,0.1),orn)
+sawyer.moveTo((0.8,0.0,0.0),orn)
 
-while(1):
-    None
+
 sawyer.disconnect()
 
