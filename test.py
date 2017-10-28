@@ -1,7 +1,7 @@
 import os
 import sawyer
 from math import pi
-
+import time
 
 ##########################
 ## Setup Sawyer simulator
@@ -29,22 +29,6 @@ sawyer.setup(gravity, timeStep, urdfFile)
 sawyer.resetPos(0.5)
 #time.sleep(1)
 
-[q,dq,sum_dq] = sawyer.readQdQ()
-print('q:::',q)
-
-input( "Hit Enter to proceed:")
-
-
-
-#######################
-#Preparation for torque mode control
-#######################
-sawyer.disableMotors()
-# set 0 Torque, initial Q and dQ
-#r.set(PY_JOINT_TORQUES_COMMANDED_KEY,"{} {} {} {} {} {} {}".format(0,0,0,0,0,0,0))
-#r.set(PY_JOINT_ANGLES_KEY, q)
-#r.set(PY_JOINT_VELOCITIES_KEY, dq)
-
 
 #######################
 ## input desired position and orientation
@@ -62,12 +46,9 @@ orn = (1, 0, 0)
 ########################
 ## START MOVING
 ########################
-sawyer.moveTo(pos,orn)
-sawyer.moveTo((0.8,0.1,0.0),orn)
-sawyer.moveTo((0.8,0.1,0.1),orn)
-sawyer.moveTo((0.8,0.0,0.1),orn)
-sawyer.moveTo((0.8,0.0,0.0),orn)
-
-
-sawyer.disconnect()
+while(1):
+    sawyer.moveTo((0,0,0,0,0,0,0))
+    time.sleep(1)
+    sawyer.moveTo((0.5,0.5,0.5,0.5,0.5,0.5,0.5))
+    time.sleep(1)
 
