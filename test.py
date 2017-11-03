@@ -10,9 +10,9 @@ import time
 sawyer.connect()
 gravity = (0, 0, -9.8)
 timeStep = 0.0001
-urdfFile = "sawyer.urdf"
+#urdfFile = "sawyer.urdf"
 #urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
-#urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
+urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
 #print(os.getcwd())
 #os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
 #urdfFile = "sawyer_robot/sawyer_description/urdf/sawyer.urdf"
@@ -20,7 +20,7 @@ urdfFile = "sawyer.urdf"
 sawyer.setup(gravity, timeStep, urdfFile)
 #sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
 #p.setRealTimeSimulation(1,sawyerId)
-
+raw_input("Press Enter to continue...")
 
 
 ############################
@@ -47,8 +47,8 @@ orn = (1, 0, 0)
 ## START MOVING
 ########################
 while(1):
-    sawyer.moveTo((0,0,0,0,0,0,0))
+    sawyer.moveTo((0,-0.5,0.5,0.5,0.5,0.5,0))
     time.sleep(1)
-    sawyer.moveTo((0.5,0.5,0.5,0.5,0.5,0.5,0.5))
+    sawyer.moveTo((0,-0.5,-0.5,-0.5,-0.5,0.5,0))
     time.sleep(1)
 

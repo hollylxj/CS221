@@ -6,8 +6,8 @@ import time
 
 #Global Variables
 #numOfJoints = range(p.getNumJoints(sawyerId))
-jids = [1,3,4,5,6,7,8]
-#jids = [5,10,11,12,13,15,18]
+#jids = [1,3,4,5,6,7,8]
+jids = [5,10,11,12,13,15,18]
 sawyerId = None     #Call setup function to load this variable
 physicsClientId = None     #Call connect function to load this variable
 
@@ -21,13 +21,19 @@ def disconnect():
 #gravity must have len of 3
 def setup(gravity, timeStep, urdfFile):
     global sawyerId
+    global cubeId
     #TODO: Insert assert statement for len of gravity
+
     p.setGravity(gravity[0],gravity[1],gravity[2])
     p.setTimeStep(timeStep)
-    sawyerId = p.loadURDF(urdfFile, useFixedBase = 1)
+    planeId = p.loadURDF("plane.urdf")
+    sawyerId = p.loadURDF(urdfFile, useFixedBase = 1,flags = 2)
+    cubeId = p.loadURDF('cube_small.urdf', [0.6,0,1])
     for i in range (p.getNumJoints(sawyerId,physicsClientId)):
         print(i, p.getJointInfo(sawyerId,i,physicsClientId)[1])
 
+#print(p.getConstraintInfo(cubeId,physicsClientId),"\n")
+#print(p.getConstraintState(cubeId,physicsClientId),"\n")
 
 
 
