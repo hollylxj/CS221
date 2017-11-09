@@ -11,8 +11,9 @@ sawyer.connect()
 gravity = (0, 0, -9.8)
 timeStep = 0.0001
 #urdfFile = "sawyer.urdf"
-#urdfFile = "/Users/holly/sawyer.git/bin/resources/sawyer/sawyer.urdf"
-urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
+# urdfFile = "/Users/holly/CS221/sawyer_no_base.urdf"
+# urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawyer.urdf"
+urdfFile = "/Users/holly/CS221/rethink/sawyer_description/urdf/sawyer_with_gripper.urdf"
 #print(os.getcwd())
 #os.chdir("/Users/holly/sawyer.git/bin/resources/sawyer")
 #urdfFile = "sawyer_robot/sawyer_description/urdf/sawyer.urdf"
@@ -20,7 +21,7 @@ urdfFile = "/Users/holly/bullet3/data/sawyer_robot/sawyer_description/urdf/sawye
 sawyer.setup(gravity, timeStep, urdfFile)
 #sawyerId = p.loadURDF("sawyer.urdf", useFixedBase = 1)
 #p.setRealTimeSimulation(1,sawyerId)
-raw_input("Press Enter to continue...")
+# input("Press Enter to continue...")
 
 
 ############################
@@ -46,9 +47,16 @@ orn = (1, 0, 0)
 ########################
 ## START MOVING
 ########################
+i=0
 while(1):
-    sawyer.moveTo((0,-0.5,0.5,0.5,0.5,0.5,0))
-    time.sleep(1)
-    sawyer.moveTo((0,-0.5,-0.5,-0.5,-0.5,0.5,0))
-    time.sleep(1)
+    xyz_pos =  sawyer.getTargetPosition()
+    print(xyz_pos)
+    pos = sawyer.getTargetJointPosition(xyz_pos)
+    sawyer.moveTo(pos)
+    #input("Press Enter to continue...")
+#time.sleep(1)
+#sawyer.moveTo((0.5,-0.5,0,0,-0.5,0.5,0))
+#time.sleep(1)
+
+
 
