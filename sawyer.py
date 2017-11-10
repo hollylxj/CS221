@@ -31,7 +31,7 @@ def setup(gravity, timeStep, urdfFile):
     p.setTimeStep(timeStep)
     planeId = p.loadURDF("plane.urdf")
     sawyerId = p.loadURDF(urdfFile, useFixedBase=1,flags=2)
-    cubeId = p.loadURDF('cube_small.urdf', [0.8,0,1])
+    cubeId = p.loadURDF('cube_small.urdf', [-0.8,0,0.1])
     for i in range (p.getNumJoints(sawyerId,physicsClientId)):
         print(i, p.getJointInfo(sawyerId,i,physicsClientId)[2])
 
@@ -57,7 +57,8 @@ def readQ():
 
 def getTargetJointPosition(xyz_pos):
     target_position = p.getBasePositionAndOrientation(cubeId)
-    target = p.calculateInverseKinematics(sawyerId, eef_link_id, xyz_pos, (0, 0, 0, 1))
+    #target = p.calculateInverseKinematics(sawyerId, eef_link_id, xyz_pos, (0, 0, 0, 1))
+    target = p.calculateInverseKinematics(sawyerId, eef_link_id, xyz_pos)
     #print(target)
     return target
 def getTargetPosition():

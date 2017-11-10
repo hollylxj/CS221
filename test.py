@@ -48,9 +48,10 @@ orn = (1, 0, 0)
 ## START MOVING
 ########################
 i=0
+
+xyz_pos =  sawyer.getTargetPosition()
+print(xyz_pos)
 while(1):
-    xyz_pos =  sawyer.getTargetPosition()
-    print(xyz_pos)
     pos = sawyer.getTargetJointPosition(xyz_pos)
     sawyer.moveTo(pos)
     #input("Press Enter to continue...")
