@@ -13,7 +13,7 @@ figure; hold on;
 stanfordcolor = 1/255*[140,21,21];
 plot(edge(:,1), edge(:,2), 'g-');
 plot(vertices(:,1), vertices(:,2), 'bo');
-plot(data_2d(:,1), data_2d(:,2), 'o-', 'linewidth', 1);
+plot(data_2d(:,1), data_2d(:,2), 'o-', 'linewidth', 2);
 plot(path0(:,1), path0(:,2), 'x-', 'linewidth', 1);
 
 rectangle('Position', [-0.5,-0.5,1,1], 'FaceColor', stanfordcolor);
@@ -34,7 +34,7 @@ figure; hold on;
 stanfordcolor = 1/255*[140,21,21];
 plot(edge(:,1), edge(:,2), 'g-');
 plot(vertices(:,1), vertices(:,2), 'bo');
-plot(data_2d(:,1), data_2d(:,2), 'o-', 'linewidth', 1);
+plot(data_2d(:,1), data_2d(:,2), 'o-', 'linewidth', 2);
 plot(path0(:,1), path0(:,2), 'x-', 'linewidth', 1);
 
 rectangle('Position', [-0.5,-0.5,1,1], 'FaceColor', stanfordcolor);
