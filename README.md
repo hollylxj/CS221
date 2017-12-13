@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-For this project, we deliver a survey of motion planning for robotic arms in a complexed environment setup based on PyBullet. We start by inspecting various path planning algorithm such as Astar, RRT and PRM in 2D and 3D space with arbitrary obstacles. Then we move to implement robotic arm control in PyBullet interface. We also implement reinforcement learning based path planning. Then we compare the performance of traditional algorithm based motion planning and reinforcement learning based motion planning.
+For this project, we deliver a survey of motion planning for robotic arms in a complexed environment setup based on PyBullet. We start by inspecting various path planning algorithm such as Astar, RRT and PRM in 2D and 3D space with arbitrary obstacles. Then we move to implementing robotic arm control in PyBullet interface. We also implement reinforcement learning based path planning. Then we compare the performance of traditional algorithm based motion planning and reinforcement learning based motion planning.
 
 ### Prerequisites
 
