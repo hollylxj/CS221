@@ -39,6 +39,7 @@ Our overall topology is: 1) get environment data (start/goal/obstacles) from sim
 First, we show how to calculate and visualize a path in the 2D space. We provide the compiled executable "demo_GeomPlanningInfo" to run RRT algorithm and output the path, edges, vertices to a standard file. The start, goal, obstacles and planning algorithm can also be changed in the code "GeomPlanningSE2_Info.cpp" and recompiled using the modified "CMakeLists.txt" provided.
 
 ```
+cd path_planning_cpp
 ./demo_GeomPlanningInfo
 ```
 
