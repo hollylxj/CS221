@@ -32,7 +32,11 @@ You should be able to run our project code after installing the dependencies.
 
 ## Running the tests
 
-Our overall topology is: 1) get environment data (start/goal/obstacles) from simulation environment and feed into C++ code base, 2) Use various planning algorithm to calculate a smoothed path, 3) visualize and direct the path back to simulation interface, 4) Utilize robotic control algorithm to direct the robotic arm to the destination. We will start by introducing how the path is calculated and visualized.
+The overall topology of the motion planning is: 
+1) get environment data (start/goal/obstacles) from simulation environment and feed into C++ code base, 
+2) use various planning algorithms to calculate a smoothed path, 
+3) visualize and direct the path data back to simulation interface, 
+4) utilize robotic control algorithm to direct the robotic arm to the destination. We will start by introducing how the path is calculated and visualized.
 
 ### Path planning using sampling-based algorithm (C++/MATLAB)
 
