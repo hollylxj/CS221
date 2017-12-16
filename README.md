@@ -14,14 +14,15 @@ Since all the data we need in this project is generated during the experiment in
 
 * To run our state sampling algorithm (RRT and PRM), you need:
   - C++
-  - [OMPL](http://ompl.kavrakilab.org/download.html)
-          ```
-          git clone https://github.com/ompl/omplapp.git
-          cd omplapp
-          git clone https://github.com/ompl/ompl.git
-          ```
-  - MATLAB, as a mean to visualize the state sampling algorithm
-  - We provide the executables for this part so you don't have to install the dependencies. While if you want to try different start/goal/obstacles, you need the full library to compile.
+  - We provide the executables for this part so you don't have to install the dependencies. While if you want to try different start/goal/obstacles, you need the full library to compile:
+   - [OMPL](http://ompl.kavrakilab.org/download.html)
+```
+git clone https://github.com/ompl/omplapp.git
+cd omplapp
+git clone https://github.com/ompl/ompl.git
+```
+   - MATLAB, as a mean to visualize the state sampling algorithm
+
 
 
 You should be able to run our project code after installing the dependencies.
